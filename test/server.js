@@ -1,18 +1,24 @@
 const net = require('net')
+const stoppable = require('stoppable')
 const assert = require('chai').assert
 const server = require('../server')
 
 const PORT = 10000
 
+let testServer
+
 beforeEach(function() {
-  server.listen({
-    host: '0.0.0.0',
-    port: PORT
-  })
+  testServer = stoppable(
+    server.listen({
+      host: '0.0.0.0',
+      port: PORT
+    }),
+    0
+  )
 })
 
 afterEach(function() {
-  server.close()
+  testServer.stop()
 })
 
 describe('Basic setup', function() {

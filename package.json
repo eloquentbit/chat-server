@@ -1,0 +1,15 @@
+{
+  "name": "chat_server",
+  "version": "1.0.0",
+  "description": "A simple chat server written in Node.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Luca Peduto",
+  "license": "MIT",
+  "devDependencies": {
+    "mocha": "^3.5.0"
+  }
+}

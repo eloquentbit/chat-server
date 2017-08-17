@@ -31,6 +31,7 @@ describe('Chat server', function() {
   it('should listen on specified port', function(done) {
     const client = net.createConnection({ port: PORT }, function() {
       assert.isNotNull(client)
+      client.end()
       done()
     })
   })

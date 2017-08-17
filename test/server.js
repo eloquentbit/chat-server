@@ -35,4 +35,33 @@ describe('Chat server', function() {
       done()
     })
   })
+
+  it('should list all the connected clients when @list command is sent', function(
+    done
+  ) {
+    let serverResponse = ''
+    let firstClientName = ''
+    let secondClientName = ''
+    const firstClient = net.createConnection({ port: PORT }, () => {
+      firstClientName = `${firstClient.localAddress}:${firstClient.localPort}`
+    })
+    const secondClient = net
+      .createConnection({ port: PORT }, () => {
+        secondClientName = `${secondClient.localAddress}:${secondClient.localPort}`
+        secondClient.write('@list')
+        firstClient.end()
+        secondClient.end()
+        done()
+      })
+      .on('data', data => {
+        serverResponse = data.toString()
+      })
+      .on('end', () => {
+        assert.strictEqual(
+          serverResponse,
+          `${firstClientName}\n${secondClientName}`
+        )
+      })
+  })
+
 })

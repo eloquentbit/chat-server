@@ -1,4 +1,4 @@
-const assert = require('assert')
+const assert = require('chai').assert
 
 describe('Basic setup', function() {
   it('should work', function() {

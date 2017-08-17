@@ -4,7 +4,8 @@
   "description": "A simple chat server written in Node.js",
   "main": "index.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "test:watch": "yarn test -- -w"
   },
   "keywords": [],
   "author": "Luca Peduto",

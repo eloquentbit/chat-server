@@ -64,4 +64,23 @@ describe('Chat server', function() {
       })
   })
 
+  it('should broadcast a message to other clients', function(done) {
+    const message = 'Hello World!'
+    const firstClient = net
+      .createConnection({ port: PORT })
+      .on('data', data => {
+        assert.isNull(data)
+      })
+
+    const secondClient = net
+      .createConnection({ port: PORT }, () => {
+        firstClient.write(message)
+      })
+      .on('data', data => {
+        assert.strictEqual(data.toString(), message)
+        firstClient.end()
+        secondClient.end()
+        done()
+      })
+  })
 })

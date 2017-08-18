@@ -7,61 +7,27 @@ const PORT = 10000
 
 let testServer
 
-beforeEach(function() {
-  testServer = stoppable(
-    server.listen({
-      host: '0.0.0.0',
-      port: PORT
-    }),
-    0
-  )
-})
-
-afterEach(function() {
-  testServer.stop()
-})
-
-describe('Basic setup', function() {
-  it('should work', function() {
-    assert.equal(true, true)
-  })
-})
-
 describe('Chat server', function() {
+  before(function() {
+    testServer = stoppable(
+      server.listen({
+        host: '0.0.0.0',
+        port: PORT
+      }),
+      0
+    )
+  })
+
+  after(function() {
+    testServer.stop()
+  })
+
   it('should listen on specified port', function(done) {
     const client = net.createConnection({ port: PORT }, function() {
       assert.isNotNull(client)
       client.end()
       done()
     })
-  })
-
-  it('should list all the connected clients when @list command is sent', function(
-    done
-  ) {
-    let serverResponse = ''
-    let firstClientName = ''
-    let secondClientName = ''
-    const firstClient = net.createConnection({ port: PORT }, () => {
-      firstClientName = `${firstClient.localAddress}:${firstClient.localPort}`
-    })
-    const secondClient = net
-      .createConnection({ port: PORT }, () => {
-        secondClientName = `${secondClient.localAddress}:${secondClient.localPort}`
-        secondClient.write('@list')
-        firstClient.end()
-        secondClient.end()
-        done()
-      })
-      .on('data', data => {
-        serverResponse = data.toString()
-      })
-      .on('end', () => {
-        assert.strictEqual(
-          serverResponse,
-          `${firstClientName}\n${secondClientName}`
-        )
-      })
   })
 
   it('should broadcast a message to other clients', function(done) {
@@ -81,6 +47,18 @@ describe('Chat server', function() {
         firstClient.end()
         secondClient.end()
         done()
+      })
+  })
+
+  it('should disconnect a client when @end is received', function(done) {
+    const client = net
+      .createConnection({ port: PORT }, () => {
+        client.write('@exit')
+        done()
+      })
+      .on('end', () => {
+        assert.isTrue(client.destroyed)
+        assert.isNull(client)
       })
   })
 })

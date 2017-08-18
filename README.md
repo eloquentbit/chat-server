@@ -2,6 +2,8 @@
 
 > A basic chat server written in Node.js
 
+[![Build Status](https://travis-ci.org/eloquentbit/chat-server.svg?branch=master)](https://travis-ci.org/eloquentbit/chat-server)
+
 ## Prerequisites
 * Node.js 6.x+
 * Yarn (or npm)

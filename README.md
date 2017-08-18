@@ -11,7 +11,7 @@
 Clone the repository:
 
 ```shell
-git clone https://github.com/eloquentbit/chat-server
+git clone https://github.com/eloquentbit/chat-server.git
 cd chat-server/
 yarn install (or npm install)
 ```
